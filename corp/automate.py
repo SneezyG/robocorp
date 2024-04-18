@@ -7,12 +7,11 @@ from robot import Bot
 load_dotenv()
 phrase = os.getenv('phrase')
 topic = os.getenv('topic')
-month = os.getenv('month')
 website = os.getenv('website')
 
 
 # instantiate a Bot
-bot = Bot(website, phrase, topic, month)
+bot = Bot(website, phrase, topic)
 
 # transverse yahoo news website and scrape news
 bot.transverse()

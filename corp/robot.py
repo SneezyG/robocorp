@@ -22,13 +22,12 @@ class Bot:
     A bot class for scraping news websites.
     """
 
-    def __init__(self, website, phrase, topic, month):
+    def __init__(self, website, phrase, topic):
         logger.info("starting robot")
 
         self.website = website
         self.phrase = phrase
         self.topic = topic
-        self.month = month
 
         # start the web driver
         try:
