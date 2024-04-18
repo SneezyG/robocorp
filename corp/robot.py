@@ -111,8 +111,11 @@ class Bot:
             current_url = driver.current_url
             print(current_url)
 
-            # find and scrape latest news in first 10 pages
+            # find and scrape latest news in first 3 pages
+            page_no = 0
             for x in range(3):
+                page_no += 1
+                logger.info("scraping yahoo news on search result page(" + page_no + ")")
                 self.scrape(driver.find_elements(By.CSS_SELECTOR,
                                                  ".searchCenterMiddle>li"))
                 # find and click the next button for page navigations
@@ -136,7 +139,6 @@ class Bot:
         """
         try:
             data_rows = []
-            logger.info("scraping yahoo news")
             for new in news:
                 # get new properties
                 title_raw = new.find_element(By.CSS_SELECTOR, ".s-title").text
@@ -180,6 +182,7 @@ class Bot:
         """
         bot method for excel data entry processes
         """
+        logger.info("writing news data to an excel file ...")
         try:
             logger.info("writing news data to an excel file")
             # load news workbook
@@ -202,7 +205,7 @@ class Bot:
         """
         bot method for downloading new images
         """
-
+        logger.info("downloading news image ...")
         # get the image
         response = requests.get(image_url)
 
@@ -218,6 +221,7 @@ class Bot:
         """
         bot method for formating news data
         """
+        logger.info("parsing news dates ...")
         now = datetime.now()
         if "hour" in date_str:
             hours_ago = int(date_str.split()[0])
@@ -260,6 +264,7 @@ class Bot:
         """
         bot method for cleaning scraped data
         """
+        logger.info("cleaning scraped news data ...")
         # Remove every '.' character
         text = text.replace('.', '')
 
