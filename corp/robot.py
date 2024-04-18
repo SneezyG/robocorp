@@ -115,7 +115,8 @@ class Bot:
             page_no = 0
             for x in range(3):
                 page_no += 1
-                logger.info("scraping yahoo news on search result page(" + page_no + ")")
+                logger.info(
+                    "scraping yahoo news on search result page(" + page_no + ")")
                 self.scrape(driver.find_elements(By.CSS_SELECTOR,
                                                  ".searchCenterMiddle>li"))
                 # find and click the next button for page navigations
