@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 from robot import Bot
 
 
-
 # load environment variables
 load_dotenv()
 phrase = os.getenv('phrase')
@@ -17,7 +16,3 @@ bot = Bot(website, phrase, topic, month)
 
 # transverse yahoo news website and scrape news
 bot.transverse()
-
-
-
-
