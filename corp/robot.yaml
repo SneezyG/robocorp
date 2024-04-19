@@ -1,10 +1,10 @@
 tasks:
   Run My Bot:
     command:
-      - python3 automate.py
+      - python3 
+      - automate.py
 
 condaConfigFile: conda.yaml
 artifactsDir: output
-
-schedule:
-  cron: "0 8 * * *"
+ignoreFiles:
+  

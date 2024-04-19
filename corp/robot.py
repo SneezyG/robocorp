@@ -15,7 +15,7 @@ import time
 
 # configuring the logger
 logger = logging.getLogger(__name__)
-logging.basicConfig(filename='robot.log', level=logging.INFO)
+logging.basicConfig(filename='output/robot.log', level=logging.INFO)
 
 
 class Bot:
@@ -45,7 +45,7 @@ class Bot:
         # check if workbook exist or create new one.
         try:
             logger.info("looking for excel workbook")
-            wb = load_workbook("news.xlsx")
+            wb = load_workbook("output/news.xlsx")
         except FileNotFoundError:
             logger.info("Workbook not found, creating new one")
             wb = Workbook()
@@ -57,7 +57,7 @@ class Bot:
             ws.append(header)
 
             # Save and close the workbook
-            wb.save('news.xlsx')
+            wb.save('output/news.xlsx')
             wb.close()
         except Exception:
             logger.exception("error loading/creating workbook")
@@ -118,7 +118,7 @@ class Bot:
             for x in range(3):
                 page_no += 1
                 logger.info(
-                    "scraping yahoo news on search result page(" + page_no + ")")
+                    f"scraping yahoo news on search result page({page_no}) ...")
                 self.scrape(driver.find_elements(By.CSS_SELECTOR,
                                                  ".searchCenterMiddle>li"))
                 # find and click the next button for page navigations
@@ -189,7 +189,7 @@ class Bot:
         try:
             logger.info("writing news data to an excel file")
             # load news workbook
-            wb = load_workbook("news.xlsx")
+            wb = load_workbook("output/news.xlsx")
             ws = wb.active
 
             # append data rows to active worksheet
@@ -197,7 +197,7 @@ class Bot:
                 ws.append(data)
 
             # save and close workbook
-            wb.save('news.xlsx')
+            wb.save('output/news.xlsx')
             wb.close()
 
         except Exception:
@@ -213,7 +213,7 @@ class Bot:
         response = requests.get(image_url)
 
         # build and create path for the image
-        image_path = os.path.join('news_images', image_name)
+        image_path = os.path.join('output/news_images', image_name)
         os.makedirs(os.path.dirname(image_path), exist_ok=True)
 
         # save the image
