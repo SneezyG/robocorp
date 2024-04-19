@@ -155,8 +155,8 @@ class Bot:
                 description = self.clean(description_raw)
 
                 # search phrase counts in title and decriptions
-                description_phrase_count = description.count(self.phrase)
-                title_phrase_count = title.count(self.phrase)
+                description_phrase_count = description.lower().count(self.phrase.lower())
+                title_phrase_count = title.lower().count(self.phrase.lower())
 
                 # get the new image and download it
                 image_name = "no image found"
