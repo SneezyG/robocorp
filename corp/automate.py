@@ -1,14 +1,14 @@
-import os
-from dotenv import load_dotenv
 from robot import Bot
+from robocorp.workitems import inputs
 
 
-# load environment variables
-load_dotenv()
-phrase = os.getenv('phrase')
-topic = os.getenv('topic')
-website = os.getenv('website')
+# Load the next input work item from the queue
+item = inputs.current
 
+# Access work item variables
+phrase = item.payload.get('phrase')
+topic = item.payload.get('topic')
+website = item.payload.get('website')
 
 # instantiate a Bot
 bot = Bot(website, phrase, topic)

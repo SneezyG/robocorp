@@ -1,6 +1,7 @@
 import os
 from selenium import webdriver
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from openpyxl import Workbook, load_workbook
@@ -32,7 +33,9 @@ class Bot:
         # start the web driver
         try:
             logger.info("starting web driver for robot")
-            self.driver = webdriver.Firefox()
+            options = Options()
+            options.headless = True
+            self.driver = webdriver.Firefox(options=options)
             # set implicit wait time to 30 seconds
             self.driver.implicitly_wait(30)
         except Exception:

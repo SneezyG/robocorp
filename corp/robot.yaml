@@ -1,0 +1,16 @@
+tasks:
+  Run My Bot:
+    command:
+      - python3 automate.py
+
+condaConfigFile: conda.yaml
+artifactsDir: output
+ignoreFiles:
+  - "*.log"
+  - "*.xlsx"
+  - "*.xls"
+  - "*.pyc"
+  - "news-images/*"
+
+schedule:
+  cron: "0 8 * * *"
