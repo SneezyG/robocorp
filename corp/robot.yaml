@@ -5,12 +5,6 @@ tasks:
 
 condaConfigFile: conda.yaml
 artifactsDir: output
-ignoreFiles:
-  - "*.log"
-  - "*.xlsx"
-  - "*.xls"
-  - "*.pyc"
-  - "news-images/*"
 
 schedule:
   cron: "0 8 * * *"

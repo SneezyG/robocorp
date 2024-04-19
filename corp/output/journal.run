@@ -1,0 +1,14 @@
+{"when":1713537673,"controller":"rcc.user","event":"start task","detail":"name= from=robot.yaml","comment":"at task environment setup"}
+{"when":1713537673,"controller":"rcc.user","event":"environment","detail":"build","comment":"Progress: 00/15 v17.18.0 0.232s Context: \"ismail\" \u003cismail@linux\u003e [linux_amd64/Distributor ID: Ubuntu; Description: Ubuntu 20.04.4 LTS; Release: 20.04; Codename: focal]."}
+{"when":1713537673,"controller":"rcc.user","event":"environment","detail":"build","comment":"Progress: 01/15 v17.18.0 0.026s Fresh [private mode] holotree environment b823e1ff-3a54-2ba9-6a69-f6d1b02a6ded. (parent/pid: 2469/2571)"}
+{"when":1713537673,"controller":"rcc.user","event":"environment","detail":"build","comment":"Progress: 02/15 v17.18.0 0.029s Holotree blueprint is \"28dc45cf564bd628\" [linux_amd64 with 3 workers on 4 CPUs from \"conda.yaml\"]."}
+{"when":1713537673,"controller":"rcc.user","event":"environment","detail":"build","comment":"Progress: 03/15 v17.18.0 0.027s Fill hololib from RCC_REMOTE_ORIGIN skipped. RCC_REMOTE_ORIGIN was not defined."}
+{"when":1713537673,"controller":"rcc.user","event":"environment","detail":"build","comment":"Progress: 04/15 v17.18.0 0.025s Cleanup holotree stage for fresh install."}
+{"when":1713537673,"controller":"rcc.user","event":"environment","detail":"build","comment":"Progress: 05/15 v17.18.0 0.026s Build environment into holotree stage \"/home/ismail/.robocorp/holotree/hdd29550_493f813dad24d3t\"."}
+{"when":1713537674,"controller":"rcc.user","event":"environment","detail":"build","comment":"Progress: 06/15 v17.18.0 0.026s Restore partial environment into holotree stage \"/home/ismail/.robocorp/holotree/hdd29550_493f813dad24d3t\"."}
+{"when":1713537674,"controller":"rcc.user","event":"environment","detail":"build","comment":"Progress: 07/15 v17.18.0 0.299s Running micromamba phase. (micromamba v1.5.1) [layer: 28dc45cf564bd628]"}
+{"when":1713537713,"controller":"rcc.user","event":"robot exit","detail":"From rcc \"v17.18.0\" point of view, \"micromamba install\" was FAILURE, reason: exit status 1","comment":"rcc point of view"}
+{"when":1713537713,"controller":"rcc.user","event":"environment","detail":"build","comment":"Progress: 07/15 v17.18.0 39.153s Running micromamba phase. (micromamba v1.5.1) [layer: 28dc45cf564bd628]"}
+{"when":1713537724,"controller":"rcc.user","event":"robot exit","detail":"From rcc \"v17.18.0\" point of view, \"micromamba install\" was FAILURE, reason: exit status 1","comment":"rcc point of view"}
+{"when":1713537724,"controller":"rcc.user","event":"environment","detail":"build","comment":"Progress: 15/15 v17.18.0 11.016s Fresh holotree done [with 3 workers on 4 CPUs]."}
+{"when":1713537724,"controller":"rcc.user","event":"robot exit","detail":"From rcc \"v17.18.0\" point of view, \"environment creation\" was FAILURE, reason: Failed to create environment, reason Could not create environment..","comment":"rcc point of view"}
