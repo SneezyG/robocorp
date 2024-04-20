@@ -36,8 +36,8 @@ class Bot:
             options = FirefoxOptions()
             options.add_argument("--headless")
             self.driver = webdriver.Firefox(options=options)
-            # set implicit wait time to 30 seconds
-            self.driver.implicitly_wait(30)
+            # set implicit wait time to 60 seconds
+            self.driver.implicitly_wait(60)
         except Exception:
             logger.exception("error starting web driver")
             self.driver.quit()
@@ -76,7 +76,7 @@ class Bot:
 
             # wait till website load
             print(current_url)
-            WebDriverWait(driver, 30).until(EC.url_matches(current_url))
+            WebDriverWait(driver, 60).until(EC.url_matches(current_url))
 
             # get the current tab as previous tab
             previous_tab = driver.current_window_handle
@@ -90,7 +90,7 @@ class Bot:
             search_btn.click()
 
             # Wait for the new window to open
-            WebDriverWait(driver, 30).until(EC.number_of_windows_to_be(2))
+            WebDriverWait(driver, 60).until(EC.number_of_windows_to_be(2))
 
             # Switch to the new window
             open_tabs = driver.window_handles
@@ -99,7 +99,7 @@ class Bot:
                     driver.switch_to.window(tab)
 
             # wait for page navigation and get the new page title
-            WebDriverWait(driver, 30).until(EC.url_changes(current_url))
+            WebDriverWait(driver, 60).until(EC.url_changes(current_url))
             current_url = driver.current_url
             print(current_url)
 
@@ -109,7 +109,7 @@ class Bot:
             news_category.click()
 
             #  wait for page navigation
-            WebDriverWait(driver, 30).until(EC.url_changes(current_url))
+            WebDriverWait(driver, 60).until(EC.url_changes(current_url))
             current_url = driver.current_url
             print(current_url)
 
@@ -126,7 +126,7 @@ class Bot:
                 next_btn.click()
 
                 # wait for page navigation
-                WebDriverWait(driver, 30).until(EC.url_changes(current_url))
+                WebDriverWait(driver, 60).until(EC.url_changes(current_url))
                 current_url = driver.current_url
                 print(current_url)
 
