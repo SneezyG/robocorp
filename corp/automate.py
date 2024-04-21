@@ -9,9 +9,12 @@ item = inputs.current
 phrase = item.payload.get('phrase')
 topic = item.payload.get('topic')
 website = item.payload.get('website')
+page = item.payload.get('page')
 
 # instantiate a Bot
-bot = Bot(website, phrase, topic)
+bot = Bot(website, phrase, topic, page)
+
+# bot = Bot("https://news.yahoo.com/", "israel", "war", 3)
 
 # transverse yahoo news website and scrape news
 bot.transverse()

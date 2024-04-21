@@ -11,6 +11,7 @@ import requests
 import re
 import logging
 import time
+import imghdr
 
 
 # configuring the logger
@@ -23,12 +24,13 @@ class Bot:
     A bot class for scraping news websites.
     """
 
-    def __init__(self, website, phrase, topic):
+    def __init__(self, website, phrase, topic, page):
         logger.info("starting robot")
 
         self.website = website
         self.phrase = phrase
         self.topic = topic
+        self.page = int(page)
 
         # start the web driver
         try:
@@ -36,8 +38,8 @@ class Bot:
             options = FirefoxOptions()
             options.add_argument("--headless")
             self.driver = webdriver.Firefox(options=options)
-            # set implicit wait time to 60 seconds
-            self.driver.implicitly_wait(60)
+            # set implicit wait time to 30 seconds
+            self.driver.implicitly_wait(30)
         except Exception:
             logger.exception("error starting web driver")
             self.driver.quit()
@@ -52,7 +54,7 @@ class Bot:
             ws = wb.active
 
             # Add column header to worksheet
-            header = ['title', 'date', 'description', 'mugshot',
+            header = ['title', 'date', 'description', 'image_name',
                       'title_phrase_count', 'description_phrase_count', 'title_contain_money']
             ws.append(header)
 
@@ -71,26 +73,43 @@ class Bot:
             logger.info("searching for yahoo latest news")
 
             driver = self.driver
-            current_url = self.website
-            driver.get(current_url)
+            driver.get(self.website)
 
-            # wait till website load
-            print(current_url)
-            WebDriverWait(driver, 60).until(EC.url_matches(current_url))
+            # wait for browser to open
+            WebDriverWait(driver, 30).until(EC.number_of_windows_to_be(1))
+            print("firefox web browser opened by driver\n")
 
-            # get the current tab as previous tab
+            # get the current tab as previous tab and  get the current url
             previous_tab = driver.current_window_handle
+            current_url = driver.current_url
+            print(f"bot url location at : {current_url}\n")
 
+            if "consent" in current_url:
+                # scroll content to show reject button
+                scroll_btn = driver.find_element(By.ID, "scroll-down-btn")
+                scroll_btn.click()
+
+                # find the reject-all button and click it
+                reject_btn = WebDriverWait(driver, 30).until(
+                    EC.element_to_be_clickable((By.CSS_SELECTOR, "button.reject-all"))
+                    )
+                reject_btn.click()
+
+                # wait for page navigation back to yahoo home 
+                WebDriverWait(driver, 30).until(EC.url_changes(current_url))
+                current_url = driver.current_url
+                print(f"bot url location at : {current_url}\n")              
+            
             # find the search input and enter the search phrase
             search_input = driver.find_element(By.ID, "ybar-sbq")
             search_input.send_keys(self.phrase)
 
-            # find, click the searh button and navigate to search result
+            # find, click the search button and navigate to search result
             search_btn = driver.find_element(By.ID, "ybar-search")
             search_btn.click()
 
             # Wait for the new window to open
-            WebDriverWait(driver, 60).until(EC.number_of_windows_to_be(2))
+            WebDriverWait(driver, 30).until(EC.number_of_windows_to_be(2))
 
             # Switch to the new window
             open_tabs = driver.window_handles
@@ -99,9 +118,9 @@ class Bot:
                     driver.switch_to.window(tab)
 
             # wait for page navigation and get the new page title
-            WebDriverWait(driver, 60).until(EC.url_changes(current_url))
+            WebDriverWait(driver, 30).until(EC.url_changes(current_url))
             current_url = driver.current_url
-            print(current_url)
+            print(f"bot url location at : {current_url}\n")
 
             # click the news button and navigate to news category
             news_category = driver.find_element(
@@ -109,13 +128,13 @@ class Bot:
             news_category.click()
 
             #  wait for page navigation
-            WebDriverWait(driver, 60).until(EC.url_changes(current_url))
+            WebDriverWait(driver, 30).until(EC.url_changes(current_url))
             current_url = driver.current_url
-            print(current_url)
+            print(f"bot url location at : {current_url}\n")
 
             # find and scrape latest news in first 3 pages
             page_no = 0
-            for x in range(3):
+            for x in range(self.page):
                 page_no += 1
                 logger.info(
                     f"scraping yahoo news on search result page({page_no}) ...")
@@ -126,9 +145,9 @@ class Bot:
                 next_btn.click()
 
                 # wait for page navigation
-                WebDriverWait(driver, 60).until(EC.url_changes(current_url))
+                WebDriverWait(driver, 30).until(EC.url_changes(current_url))
                 current_url = driver.current_url
-                print(current_url)
+                print(f"bot url location at : {current_url}\n")
 
             # end the bot process
             self.finish()
@@ -158,23 +177,24 @@ class Bot:
                 description_phrase_count = description.lower().count(self.phrase.lower())
                 title_phrase_count = title.lower().count(self.phrase.lower())
 
-                # get the new image and download it
-                image_name = "no image found"
+                # get the news image and download it
+                image_name = ""
                 try:
                     image = new.find_element(By.CSS_SELECTOR, ".s-img")
                     image_name = image.get_attribute("alt")
                     image_url = image.get_attribute("src")
-                    self.download_image(image_name, image_url)
+                    image_name = self.download_image(image_name, image_url)
                 except Exception:
                     logger.warning("no image found for news")
+                    image_name = "no image found"
 
                 # check if title contain money
                 title_contain_money = self.contains_monetary_value(
                     title, description)
 
                 # append row to data
-                data_rows.append([title, date, image_name, description,
-                                 description_phrase_count, title_phrase_count, title_contain_money])
+                data_rows.append([title, date, description, image_name,
+                            title_phrase_count, description_phrase_count, title_contain_money])
 
             self.data_entry(data_rows)
         except Exception:
@@ -212,19 +232,29 @@ class Bot:
         # get the image
         response = requests.get(image_url)
 
+        image_extension = imghdr.what(None, h=response.content)
+        if not image_extension or image_extension == "jpeg":
+            # Default to jpg if image type cannot be determined
+            image_extension = "jpg"
+
+        # Construct the image filename
+        image_name = f"{image_name}.{image_extension}"
+
         # build and create path for the image
-        image_path = os.path.join('output/news_images', image_name)
+        image_path = os.path.join('output', image_name)
         os.makedirs(os.path.dirname(image_path), exist_ok=True)
 
         # save the image
         with open(image_path, "wb") as f:
             f.write(response.content)
 
+        # return image name
+        return image_name
+
     def parse_date(self, date_str):
         """
         bot method for formating news data
         """
-        logger.info("parsing news dates ...")
         now = datetime.now()
         if "hour" in date_str:
             hours_ago = int(date_str.split()[0])
@@ -267,7 +297,6 @@ class Bot:
         """
         bot method for cleaning scraped data
         """
-        logger.info("cleaning scraped news data ...")
         # Remove every '.' character
         text = text.replace('.', '')
 
