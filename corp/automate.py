@@ -1,4 +1,5 @@
 from robot import Bot
+"""
 from robocorp.workitems import inputs
 
 
@@ -13,8 +14,9 @@ page = item.payload.get('page')
 
 # instantiate a Bot
 bot = Bot(website, phrase, topic, page)
+"""
 
-# bot = Bot("https://news.yahoo.com/", "israel", "war", 3)
+bot = Bot("https://news.yahoo.com/", "israel", "war", 3)
 
 # transverse yahoo news website and scrape news
 bot.transverse()
