@@ -39,7 +39,7 @@ Once you're set up, you can call the robot by running:
 rcc run
 ```
 
-And you can change the default value for robot arguments in automate.py which is in the corp directory.
+And you can change the default value for bot arguments in automate.py which is in the corp directory.
 
 ```bash
 bot = Bot("https://news.yahoo.com/", phrase, topic, page)
